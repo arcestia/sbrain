@@ -18,6 +18,7 @@ Only these exceptions get to crawl away.
 - `// prettier-ignore`. Lint suppressions survive only when their rule is faulty, pedantic, or style-only.
 - Doc comments that define a public API contract.
 - Issue or RFC links that explain a constraint code cannot express.
+- Comments a compiler, type checker, or tool reads. Go `//go:` directives. Ruby magic comments (`# frozen_string_literal:`, Sorbet's `# typed:`). PHPDoc types that PHPStan or Psalm reads (`@var`, `@param list<User>`, `@return`, `@template`, `@phpstan-*`), but not the prose around them. TypeScript triple-slash directives. Rust `// SAFETY:` comments on `unsafe` blocks.
 
 That list is my only leash. When I am not sure a keep clause applies, the comment dies. Everything else is meat.
 

@@ -1,0 +1,17 @@
+{
+  "description": "SBrain format-on-edit: formats each file Claude writes with the repository's own formatter. Set SBRAIN_FORMAT_ON_EDIT=0 to turn it off.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/format-on-edit.sh\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

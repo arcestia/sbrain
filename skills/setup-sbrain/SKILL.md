@@ -1,13 +1,13 @@
 ---
 name: setup-sbrain
-description: Configure which models pstack uses per role and at what reasoning budget. Detects your available models and writes an always-applied rule that overrides the skill defaults. Use for /setup-sbrain, "configure pstack models", "pstack budget", or changing pstack's model choices.
+description: Configure which models SBrain uses per role and at what reasoning budget. Detects your available models and writes an always-applied rule that overrides the skill defaults. Use for /setup-sbrain, "configure pstack models", "pstack budget", or changing pstack's model choices.
 ---
 
-# Setup pstack
+# Setup SBrain
 
-In Claude Code, read [the Claude Code adapter](../../docs/harness/claude-code.md) once per session before you follow this skill. It maps the Cursor names in pstack skills to Claude Code.
+In Claude Code, read [the Claude Code adapter](../../docs/harness/claude-code.md) once per session before you follow this skill. It maps the Cursor names in SBrain skills to Claude Code.
 
-Write `~/.cursor/rules/sbrain-models.mdc`, an always-applied rule that sets pstack's model per role.
+Write `~/.cursor/rules/sbrain-models.mdc`, an always-applied rule that sets SBrain's model per role.
 
 ## Steps
 
@@ -51,10 +51,10 @@ Write `~/.cursor/rules/sbrain-models.mdc` with `alwaysApply: true`, the `# defau
 
 ```
 ---
-description: pstack per-role model choices (overrides skill defaults)
+description: SBrain per-role model choices (overrides skill defaults)
 alwaysApply: true
 ---
-# pstack model configuration. One line per role. Delete a line to fall back to the skill default.
+# SBrain model configuration. One line per role. Delete a line to fall back to the skill default.
 # `inherit-parent` or `auto` as a value: the role runs on the parent chat model (omit Task `model` and spawn `generalPurpose`). Alias entries in a panel list still count toward its fan-out.
 # defaults: 3
 # budget: large (xhigh)

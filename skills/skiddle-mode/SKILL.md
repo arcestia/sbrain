@@ -1,14 +1,14 @@
 ---
 name: skiddle-mode
-description: poteto's agent style for concise, detailed responses, deliberate subagents, unslopped prose, simple code, and verified work. Use for poteto, /skiddle-mode, or requests to work in this style.
+description: Skiddle's agent style for SBrain, forked from poteto's pstack, for concise, detailed responses, deliberate subagents, unslopped prose, simple code, and verified work across TypeScript, React, Next.js, Go, Rust, Ruby, and PHP. Use for /skiddle-mode, or requests to work in this style.
 disable-model-invocation: true
 icon: crown
 color: yellow
 ---
 
-# Poteto mode
+# Skiddle mode
 
-In Claude Code, read [the Claude Code adapter](../../docs/harness/claude-code.md) once per session before you follow this skill. It maps the Cursor names in pstack skills to Claude Code.
+In Claude Code, read [the Claude Code adapter](../../docs/harness/claude-code.md) once per session before you follow this skill. It maps the Cursor names in SBrain skills to Claude Code.
 
 Bundled skills live at `../<name>/SKILL.md` from this file, so put this file's absolute path in every `skiddle-agent` prompt.
 
@@ -22,11 +22,13 @@ The remaining triggers live only here:
 - Starting any agent, whether a Task subagent or a Project worker → the first line of its kickoff is `Read <path>/worker.md before anything else.`, with `<path>` the absolute path of this skill's folder. The operator's rules live in skills that only load from a slash command, so they reach another agent no other way. Keep the rest of the kickoff to the goal and the task, plus this file's absolute path for a `skiddle-agent`.
 - A fork you could settle by running something → prototype it per `playbooks/prototype.md` instead of asking.
 - Code → name the data shape first. Across a function boundary → **architect**. Fan-out → **swarm**. Bakeoff → **arena**. Contested design → **interrogate**.
+- Reading or editing code → read its language skill before the first edit, and hand its path to every delegate that touches that code. `.ts` → **typescript-best-practices**. `.tsx`, `.jsx`, or a Next.js app → **typescript-best-practices** and **react-best-practices**. `.go` → **go-best-practices**. `.rs` → **rust-best-practices**. `.rb`, `.erb`, `.rake`, `Gemfile` → **ruby-best-practices**. `.php`, `.blade.php` → **php-best-practices**. Each language skill names the commands that prove a change in that stack, so "verify on the matching surface" runs the real toolchain.
+- Data that crosses a language or service boundary (an HTTP, gRPC, or GraphQL API, a queue message, a webhook, a table two services read) → **polyglot-boundaries** before the first edit on either side.
 - Prose, your reply included → **unslop**. Docs, PR descriptions, commit messages → **technical-writing**.
-- Before commit → `/deslop` from the `cursor-team-kit` plugin. Before review → **no-comments**.
-- Shipping UI / IDE / CLI → `control-ui` or `control-cli` from `cursor-team-kit`.
+- Before commit → strip slop from the diff, with `/simplify` when the session lists it, else by hand: dead code, one-caller wrappers, guards for states that cannot happen. Before review → **no-comments**.
+- Shipping UI → drive the running app in the session's browser (the built-in browser, Claude in Chrome, or Playwright) against a real build. Shipping a CLI or service → run the built binary or server through `Bash` with real inputs and read its output.
 - A number you measured → **benchmark-checklist**.
-- PR status → the **Babysit** playbook, not Cursor's built-in babysit skill. Landing a green stack → the **Shipping** playbook.
+- PR status → the **Babysit** playbook. Landing a green stack → the **Shipping** playbook. Teammates review every PR, so a merge waits for the approvals the repository requires.
 - Bot review comments → judge each on its merits.
 - Long or unattended work → **show-me-your-work**.
 

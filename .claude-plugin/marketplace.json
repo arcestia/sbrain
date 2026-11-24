@@ -1,0 +1,15 @@
+{
+  "name": "sbrain",
+  "owner": {
+    "name": "SBrain"
+  },
+  "description": "Local marketplace for SBrain, a personal agent development process forked from pstack.",
+  "plugins": [
+    {
+      "name": "sbrain",
+      "source": "./",
+      "description": "SBrain: a personal agent development process for Claude Code, forked from Lauren Tan's pstack and extended for TypeScript, React, Next.js, Go, Rust, Ruby, and PHP.",
+      "version": "0.1.0"
+    }
+  ]
+}

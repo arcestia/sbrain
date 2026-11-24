@@ -1,3 +1,5 @@
+> **SBrain note.** This guide is pstack's upstream guide by Lauren Tan, kept for reference with commands renamed to SBrain's (`/skiddle-mode`, `/setup-sbrain`, `/skiddle-help`). Where it says "pstack", read "SBrain". Where it describes a Cursor feature, [the Claude Code adapter](../harness/claude-code.md) says what SBrain does instead. SBrain's own additions (the language skills and `polyglot-boundaries`) are described in the [root README](../../README.md).
+
 # The pstack guide
 
 pstack works best when you stop micromanaging the agent. You describe what you want and how you'll know it's done. `/skiddle-mode` picks the playbook, runs the other skills as the steps need them, and shows you the evidence. This guide teaches that habit with realistic prompts.
