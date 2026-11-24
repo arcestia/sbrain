@@ -75,6 +75,10 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 - **Encode Lessons in Structure.** You catch yourself writing the same instruction a second time. Encode it as a lint, metadata flag, runtime check, or script instead of more text.
 
+**Production (SBrain)**
+
+- **Old and New Run Together.** Changing schemas, stored data, message or cache formats, config, or APIs that deployed clients call. Expand, migrate, and contract across deploys. Outcome-Oriented Execution's planned breakage never covers data or contracts that outlive a deploy.
+
 ## Autonomy
 
 **Just do it.** Use any MCP tool. Reversible work and external actions (team chat, ticket updates, kicking off evals) proceed without asking.

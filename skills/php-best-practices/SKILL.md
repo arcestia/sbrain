@@ -30,7 +30,7 @@ Apply the **type-system-discipline** and **boundary-discipline** principle skill
 - **Thin controllers.** Controllers call actions or services. Reusable query parts become Eloquent scopes.
 - **Queues.** Make every job idempotent (the **make-operations-idempotent** principle). Use `ShouldBeUnique` when duplicates hurt. Dispatch after commit (`afterCommit()`).
 - **Config.** Call `env()` only inside `config/*.php`. Everywhere else use `config()`, because a cached config makes `env()` return `null`.
-- **Migrations.** Never edit a migration that has run outside your machine. Add a new one. Make foreign keys and their delete behavior explicit (`->constrained()->cascadeOnDelete()` or `->restrictOnDelete()`).
+- **Migrations.** Never edit a migration that has run outside your machine. Add a new one. Make foreign keys and their delete behavior explicit (`->constrained()->cascadeOnDelete()` or `->restrictOnDelete()`). Apply the **old-and-new-run-together** principle.
 
 ## Verify
 

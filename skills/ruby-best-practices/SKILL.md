@@ -27,7 +27,7 @@ Apply the **boundary-discipline** and **model-the-domain** principle skills firs
 - **Callbacks.** Model callbacks keep the record's own data consistent, and nothing else. Emails, jobs, and API calls run from the caller or in `after_commit`, never `after_save`, which runs inside the transaction.
 - **Jobs.** Make every job idempotent (the **make-operations-idempotent** principle). Pass IDs, not records. Enqueue after the transaction commits.
 - **Queries.** Scopes return relations. Use `find_each` for batches, `exists?` over `present?` on a relation, and `pluck` for columns. Placeholders or hash conditions only, never string interpolation in `where`.
-- **Migrations.** Reversible, and safe on a large table: add the column as nullable, backfill in batches, then add the constraint. On Postgres, add indexes with `algorithm: :concurrently` and `disable_ddl_transaction!`. Follow `strong_migrations` when it's installed.
+- **Migrations.** Reversible, and safe on a large table: add the column as nullable, backfill in batches, then add the constraint. On Postgres, add indexes with `algorithm: :concurrently` and `disable_ddl_transaction!`. Follow `strong_migrations` when it's installed. Apply the **old-and-new-run-together** principle.
 - **Security.** Strong params on every write. `html_safe` and `raw` only on sanitized content. Keep CSRF protection on.
 - **Where code goes.** Controllers stay thin. Domain logic goes in models or plain Ruby objects under the repository's existing folder (`app/models`, `app/services`, `app/operations`), not into a god model.
 
