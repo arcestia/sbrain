@@ -5,7 +5,7 @@ description: Configure which models pstack uses per role and at what reasoning b
 
 # Setup pstack
 
-In Claude Code, read [the Claude Code adapter](../../docs/harness/claude-code.md) once per session before you follow this skill. It maps the Cursor names in pstack skills to Claude Code.
+Outside Cursor, read your agent's adapter in [`skiddle-mode/references/harness/`](../skiddle-mode/references/harness/README.md) once per session before you follow this skill. It maps the Cursor names in SBrain skills to your agent's tools.
 
 Write `~/.cursor/rules/sbrain-models.mdc`, an always-applied rule that sets pstack's model per role.
 

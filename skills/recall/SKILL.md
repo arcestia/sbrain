@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Recall
 
-In Claude Code, read [the Claude Code adapter](../../docs/harness/claude-code.md) once per session before you follow this skill. It maps the Cursor names in pstack skills to Claude Code.
+Outside Cursor, read your agent's adapter in [`skiddle-mode/references/harness/`](../skiddle-mode/references/harness/README.md) once per session before you follow this skill. It maps the Cursor names in SBrain skills to your agent's tools.
 
 **Before you start or resume work, you rebuild the user's recent working context and hand back a tight capsule of where things stand now and what to do next.**
 
