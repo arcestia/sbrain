@@ -1,4 +1,4 @@
-> **SBrain note.** This guide is pstack's upstream guide by Lauren Tan, kept for reference with commands renamed to SBrain's (`/skiddle-mode`, `/setup-sbrain`, `/skiddle-help`). Where it says "pstack", read "SBrain". Where it describes a Cursor feature, [the Claude Code adapter](../../skills/skiddle-mode/references/harness/claude-code.md) says what SBrain does instead. SBrain's own additions (the language skills and `polyglot-boundaries`) are described in the [root README](../../README.md).
+> **SBrain note.** This guide is pstack's upstream guide by Lauren Tan, kept for reference with commands renamed to SBrain's (`/skiddle-mode`, `/setup-sbrain`, `/skiddle-help`). Where it says "pstack", read "SBrain". Where it describes a Cursor feature, [your agent's adapter](../../skills/skiddle-mode/references/harness/README.md) says what SBrain does instead. SBrain's own additions (the language skills and `polyglot-boundaries`) are described in the [root README](../../README.md).
 
 # The pstack guide
 

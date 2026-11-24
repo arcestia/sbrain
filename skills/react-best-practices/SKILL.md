@@ -42,4 +42,4 @@ Run the repository's own scripts first (`package.json` scripts, `turbo`, `nx`), 
 - Lint with the repository's lint script (ESLint or Biome)
 - Unit and component tests (Vitest or Jest)
 - `next build` for a Next.js change, because it catches server and client import mistakes and route errors that the dev server hides
-- Drive the changed page in a browser (the built-in browser, Claude in Chrome, or Playwright) on a real build or the dev server. Check the console for hydration and key warnings. That is the evidence, not the test count.
+- Drive the changed page with the session's browser tools, or Playwright, on a real build or the dev server. Check the console for hydration and key warnings. That is the evidence, not the test count.

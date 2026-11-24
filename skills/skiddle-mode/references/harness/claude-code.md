@@ -1,6 +1,6 @@
 # SBrain in Claude Code
 
-SBrain skills keep the Cursor names they inherited from pstack. SBrain runs only in Claude Code, so read this file once per session, then map each Cursor name in a skill with the tables below. `<sbrain>` means the folder that holds `skills/` and `docs/`. If a Cursor field has no row, drop it and say so. Never pass a field or value the tool schema rejects.
+Read [the rules for every agent](README.md) first, then map each Cursor name in a skill with the tables below. In Claude Code, SBrain installs as a plugin, so skills, agents, and commands carry the `sbrain:` prefix.
 
 ## Tools
 
@@ -53,30 +53,15 @@ Claude Code loads every `.md` file in `~/.claude/rules/` into each new session, 
 | `.cursor/skills/`, `~/.cursor/skills/` | `.claude/skills/`, `~/.claude/skills/` |
 | `~/.cursor/plugins/`, `.cursor-plugin/plugin.json` | `~/.claude/plugins/`, `.claude-plugin/plugin.json` |
 | `.cursor/rules/*.mdc`, always-applied rules | `CLAUDE.md`, or `AGENTS.md` when no `CLAUDE.md` exists. Claude Code never reads `.mdc` files. The model rule is the exception. See Models. |
-| `https://github.com/cursor/plugins/blob/main/pstack/<path>` | `<sbrain>/<path>` when that file exists. The plugin ships the skills, `docs/guide/`, and `README.md`. Read the local copy and never fetch it. Give the user the URL when they need a link. |
 | Transcripts in `~/.cursor/projects/<slug>/agent-transcripts/` | `~/.claude/projects/<slug>/<session>.jsonl`. The slug is the workspace path with each `/` and `.` changed to `-`, so `/Users/you/proj` is `-Users-you-proj`. The newest `.jsonl` directly in that folder is the current session. Its `<session>/subagents/` folder holds subagent transcripts. Read only this workspace's folder. |
 
-## Cursor-only features
+## Claude Code specifics
 
-Claude Code has no Cursor Automations, Bugbot, Cursor cloud agents, or built-in PR tool. When a step needs one, put one line in your reply, `Skipped in Claude Code: <step>. <reason>.`, then go on to the next step. Do not stop, ask, or retry. When a later step needs what the skipped step made, such as a URL or a key, leave a placeholder and name it in the line.
-
-| Cursor | Claude Code |
+| Cursor or SBrain need | Claude Code |
 | --- | --- |
-| Cursor Automations: routines, `update_state` routine calls, `api2.cursor.sh/automations` webhooks, routine wakes, and `SendToUser` secret requests | Skip with the line. |
-| Bugbot | Bugbot comments on a GitHub PR are ordinary review threads, so triage them with the forge command that the step gives. Skip a step that starts, waits for, or configures Bugbot when the PR has no Bugbot check or comment. |
-| Cursor cloud agents | `environment: "cloud"` maps to a worktree, as in Subagent fields. Skip a step that needs the cloud agent itself, such as its dashboard status or its own machine. |
-| A built-in PR tool | Use the forge command that the step gives, such as `gh pr create`. That is not a skip, so write no line. |
-| Origin's CLI (`origin pr ...`) | A Cursor-internal forge. SBrain repositories live on GitHub, so take the step's `gh` branch and write no line. |
-
-## Skills from other Cursor plugins
-
-pstack leaned on skills that ship outside it. SBrain maps each one to Claude Code. None of these is a skip, so write no line.
-
-| Cursor | Claude Code |
-| --- | --- |
-| `/deslop` from `cursor-team-kit` | `/simplify` when the session lists it. Otherwise review the diff yourself for dead code, one-caller wrappers, needless layers, and guards for states that cannot happen, then fix them. |
-| `control-ui` from `cursor-team-kit` | Drive the running app in the session's browser tools (the built-in browser or Claude in Chrome), or in Playwright when neither exists. Use a real build, read the console, and capture the evidence. |
-| `control-cli` from `cursor-team-kit` | Run the built binary or server through `Bash` with real inputs, and read its output, exit code, and logs. For an HTTP service, start it and call it with `curl`. |
+| Invoking an SBrain skill by name | The user types `/sbrain:<name>`. |
+| `/deslop` | `/simplify` when the session lists it. |
+| `control-ui` | The session's browser tools (the built-in browser or Claude in Chrome). |
 | Cursor's `/loop` | Claude Code's `/loop` skill. |
-| Cursor's `/create-skill` | The `skill-creator` skill when the session lists one. Otherwise write the skill by hand: a folder holding a `SKILL.md` with `name` and `description` frontmatter, a body under about 100 lines, and `references/` for detail. Then run `claude plugin validate` on the plugin folder. |
-| Cursor Custom Modes | None. Start each task with `/sbrain:skiddle-mode`. |
+| Cursor's `/create-skill` | The `skill-creator` skill when the session lists one, then `claude plugin validate <sbrain>`. |
+| Format hook | Ships in the plugin (`hooks/hooks.json`). `SBRAIN_FORMAT_ON_EDIT=0` turns it off. |

@@ -10,9 +10,9 @@ Outside Cursor, read your agent's adapter in [`skiddle-mode/references/harness/`
 
 Answer the user's question about SBrain, hand them a prompt they can send, and link the file the answer came from. For a help question, don't start the work. The user asked how, and an SBrain run spends real tokens, so let them send the prompt.
 
-A message that asks for work, such as "use SBrain to fix this bug", is not a help question. Read [`skiddle-mode`](../skiddle-mode/SKILL.md), do the work under it, and mention once that starting each task with `/sbrain:skiddle-mode` keeps the style on.
+A message that asks for work, such as "use SBrain to fix this bug", is not a help question. Read [`skiddle-mode`](../skiddle-mode/SKILL.md), do the work under it, and mention once that starting each task with `skiddle-mode`, typed the way their agent invokes skills, keeps the style on.
 
-This file maps questions to the skills and guide pages that hold the answers. Those files own the details. Read the file you route to before you quote it, and trust it when it disagrees with this map. SBrain has no public copy, so link the file by its local path. The guide pages under `docs/guide/` are pstack's upstream guide, so when one names a Cursor feature, say what SBrain does instead per the adapter.
+This file maps questions to the skills and guide pages that hold the answers. Those files own the details. Read the file you route to before you quote it, and trust it when it disagrees with this map. SBrain has no public copy, so link the file by its local path. The guide pages under `docs/guide/` are pstack's upstream guide, so when one names a Cursor feature, say what SBrain does instead per the user's adapter in [`skiddle-mode/references/harness/`](../skiddle-mode/references/harness/README.md).
 
 ## Find out what they need
 
@@ -26,32 +26,34 @@ Infer the need from the message and the conversation. A named situation, such as
 
 Check the state that changes the answer, and mention it only when it does:
 
-- No `~/.claude/rules/sbrain-models.md` means `/setup-sbrain` hasn't run for this user, so every role uses its default model.
+- No model file means `/setup-sbrain` hasn't run for this user, so every role uses its default model. The file is `~/.claude/rules/sbrain-models.md` in Claude Code, `~/.cursor/rules/sbrain-models.mdc` in Cursor, and `~/.agents/sbrain-models.md` in every other agent.
 - No `verify-*` skill or other app harness in the project means agents have no scripted way to drive the app. Mention `/create-verification-skill` when the question is about proving a change works.
 - No formal verification skill in the project means no property is checked past what tests reach. Mention `/create-formal-verification-skill` when the question is about a race, an invariant, or another case tests rarely hit. When one exists and the code it covers changed after the commit it records as last in sync, mention `/maintain-formal-verification-skill` if the question touches that code.
 
 When the model rule is missing and it matters, ask whether the user wants to pick a model for each role and a reasoning budget now. It matters when the user is new, the question is about setup or cost, or the answer depends on which models run. Ask at most once per chat. If the need is also unclear, ask both questions together. Offer two choices:
 
-- Now: give them `/sbrain:setup-sbrain` to type, and answer their question too.
-- Later: answer their question, and add one line saying every role keeps its default model until they run `/sbrain:setup-sbrain`.
+- Now: give them `setup-sbrain` to run, and answer their question too.
+- Later: answer their question, and add one line saying every role keeps its default model until they run `setup-sbrain`.
 
 ## Get set up
 
-1. Install from the SBrain folder, which is its own marketplace: `/plugin marketplace add ~/sbrain`, then `/plugin install sbrain@sbrain`. In a terminal, `claude plugin marketplace add ~/sbrain` and `claude plugin install sbrain@sbrain` do the same.
-2. Run [`/sbrain:setup-sbrain`](../setup-sbrain/SKILL.md). It asks for a reasoning budget, maps a model to each role, and writes `~/.claude/rules/sbrain-models.md`. The rule applies to new sessions. Then it offers once each to generate a verification skill and a formal verification skill for the project, unless the project already has one.
-3. Start a real task with `/sbrain:skiddle-mode`, a goal, and a check that can pass or fail.
+1. Install with `~/sbrain/scripts/install.sh`. It finds the agents on this machine and sets up each one: the Claude Code plugin, skill links in `~/.agents/skills/` (read by Cursor, Codex, Copilot, OpenCode, Gemini CLI, Pi, Amp, Goose, and Devin), each agent's own `skiddle-agent` and `comment-sicko` files, and the format hook where the agent supports one. `--list` shows what it found, `--only codex,cursor` limits it, `--dry-run` previews it, and `--uninstall` removes only what it added.
+2. Run [`setup-sbrain`](../setup-sbrain/SKILL.md) once per agent. It asks for a reasoning budget, maps a model to each role, and writes that agent's model file. Then it offers once each to generate a verification skill and a formal verification skill for the project, unless the project already has one.
+3. Start a real task with `skiddle-mode`, a goal, and a check that can pass or fail.
 
-Installing changes nothing until the user invokes a skill, except the format-on-edit hook, which formats each file Claude writes with the repository's own formatter. `SBRAIN_FORMAT_ON_EDIT=0` turns it off. The [README](../../README.md) has the details. Offer to word their first prompt with them, per [`references/prompting.md`](references/prompting.md).
+How to type a skill differs by agent: `/sbrain:skiddle-mode` in Claude Code, `$skiddle-mode` in Codex, `/skill:skiddle-mode` in Pi, and `/skiddle-mode` in Cursor, Copilot, and most others. Each adapter in [`skiddle-mode/references/harness/`](../skiddle-mode/references/harness/README.md) says so, and says what that agent can't do, such as subagents in Pi.
 
-If cost is the worry, say where the tokens go and how to spend fewer. SBrain spends extra tokens on subagents and review panels. Rerun `/sbrain:setup-sbrain` and pick a smaller budget or cheaper models. A role set to `inherit-parent` runs on the session's model. A shorter panel list runs fewer subagents, one for each entry. Save `/skiddle-mode` for work that needs rigor.
+Installing changes nothing until the user invokes a skill, except the format-on-edit hook, which formats each file the agent writes with the repository's own formatter. `SBRAIN_FORMAT_ON_EDIT=0` turns it off. The [README](../../README.md) has the details. Offer to word their first prompt with them, per [`references/prompting.md`](references/prompting.md).
 
-Every command takes the `sbrain:` prefix, such as `/sbrain:skiddle-mode`. A step that needs a Cursor-only feature, such as Automations, is skipped with a one-line note, and the adapter maps the rest.
+If cost is the worry, say where the tokens go and how to spend fewer. SBrain spends extra tokens on subagents and review panels. Rerun `setup-sbrain` and pick a smaller budget or cheaper models. A role set to `inherit-parent` runs on the session's model. A shorter panel list runs fewer subagents, one for each entry. Save `/skiddle-mode` for work that needs rigor.
+
+A step that needs a Cursor-only feature, such as Automations, is skipped with a one-line note, and the adapter maps the rest.
 
 ## Start a task with `/skiddle-mode`
 
 `/skiddle-mode` matches the task to a playbook, copies the playbook's steps into the todo list, loads the language skill for each file it edits, and runs the other skills as the steps need them. A good prompt states the goal and how to tell it's done. It doesn't list skills, because a hand-written sequence tends to drop or reorder steps the playbook would keep. Read [`references/prompting.md`](references/prompting.md) before you help word one. [Guide page 2](../../docs/guide/02-skiddle-mode.md) has examples.
 
-The skill attaches to the turn that invokes it and fades as the session moves on. Start each new task with `/sbrain:skiddle-mode`. Mid-session, "new task" makes the mode match a fresh playbook. `/skiddle-mode` already uses `skiddle-agent` for the subagents its playbook steps spawn. To get the same style from a subagent of your own, spawn it with `subagent_type: "sbrain:skiddle-agent"`.
+The skill attaches to the turn that invokes it and fades as the session moves on. Start each new task with `skiddle-mode`. Mid-session, "new task" makes the mode match a fresh playbook. `/skiddle-mode` already uses `skiddle-agent` for the subagents its playbook steps spawn. To get the same style from a subagent of your own, spawn the `skiddle-agent` type your adapter names, or follow its general-subagent rule.
 
 ## Pick a skill
 
@@ -113,7 +115,7 @@ Close calls:
 Not in SBrain:
 
 - pstack's `/make-bot-ui` was dropped, because it wakes a Cursor-hosted bot.
-- `/deslop`, `control-cli`, `control-ui`, Cursor's `/loop`, and `/create-skill` map to Claude Code per the adapter.
+- `/deslop`, `control-cli`, `control-ui`, Cursor's `/loop`, and `/create-skill` map to each agent per the [harness README](../skiddle-mode/references/harness/README.md).
 - SBrain has no `/orchestrate` skill. If the slash menu shows `/orchestrate`, another plugin provides it.
 
 ## Playbooks and principles
@@ -129,20 +131,20 @@ Playbooks are step lists inside `/skiddle-mode`, not skills, so they have no sla
 
 Without `/skiddle-mode`, a phrase such as "babysit this pr" can start another plugin's skill for the same job instead. The Playbooks section of [`skiddle-mode`](../skiddle-mode/SKILL.md) lists every playbook. [Guide page 6](../../docs/guide/06-verify-and-ship.md) covers opening, babysitting, and landing a PR.
 
-SBrain has no planning skill. Claude Code's plan mode works alongside it. For work that spans phases or stacked PRs, asking `/skiddle-mode` for a plan runs the [Multi-phase plan playbook](../skiddle-mode/playbooks/multi-phase-plan.md), which writes the plan and doesn't implement it. For a design question, the Prototype playbook or `/architect` settles it in code first.
+SBrain has no planning skill. Your agent's plan mode, if it has one, works alongside it. For work that spans phases or stacked PRs, asking `/skiddle-mode` for a plan runs the [Multi-phase plan playbook](../skiddle-mode/playbooks/multi-phase-plan.md), which writes the plan and doesn't implement it. For a design question, the Prototype playbook or `/architect` settles it in code first.
 
-Principles are one-rule skills that `/skiddle-mode` reads and cites in its replies. The user rarely invokes one. They steer with the names instead, as in "apply prove it works. show me the real output." Typing `/sbrain:principle-<name>` still loads one on demand. [Guide page 8](../../docs/guide/08-principles.md) lists them.
+Principles are one-rule skills that `/skiddle-mode` reads and cites in its replies. The user rarely invokes one. They steer with the names instead, as in "apply prove it works. show me the real output." Asking for `principle-<name>` by name still loads one on demand. [Guide page 8](../../docs/guide/08-principles.md) lists them.
 
 ## Fix a run that went wrong
 
 | Symptom | Fix |
 |---|---|
-| The mode stopped applying after a few turns | Skills fade as a session grows. Start each task with `/sbrain:skiddle-mode`, or say "new task". |
+| The mode stopped applying after a few turns | Skills fade as a session grows. Start each task with `skiddle-mode`, or say "new task". |
 | A question got treated as the next step of the last task | Say "new task", or say the turn doesn't need the mode. |
 | A new model choice had no effect | The rule from `/setup-sbrain` applies to new sessions. Start one. |
 | Runs cost more than expected | See the cost paragraph under Get set up. |
 | A skill didn't load on its own | The others load when the user types them or when `/skiddle-mode` runs them, and it doesn't run every skill. |
-| Edits ignored the language's conventions | `/skiddle-mode` reads the language skill for each file it edits. A plain session doesn't. Start the task with `/sbrain:skiddle-mode`, or name the skill, such as `/sbrain:go-best-practices`. |
+| Edits ignored the language's conventions | `/skiddle-mode` reads the language skill for each file it edits. A plain session doesn't. Start the task with `skiddle-mode`, or name the skill, such as `go-best-practices`. |
 | A Rust, PHP, or other check was skipped because the toolchain is missing | The language skill says to run it in the repository's container or version manager. A skipped check is not a pass, so ask for the real output. |
 | Parallel agents overwrote each other | Give each agent its own worktree (`isolation: "worktree"`). |
 | An overnight run moved but finished nothing | `/loop` needs a check that can pass or fail, not a duration. See [guide page 7](../../docs/guide/07-overnight.md). |

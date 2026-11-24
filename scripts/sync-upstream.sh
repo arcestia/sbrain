@@ -35,6 +35,11 @@ mv skills/setup-pstack skills/setup-sbrain
 mv agents/poteto-agent.md agents/skiddle-agent.md
 mv docs/guide/02-poteto-mode.md docs/guide/02-skiddle-mode.md
 
+# Harness adapters live inside the skill tree, so a skills-only install still has them.
+mkdir -p skills/skiddle-mode/references/harness
+mv docs/harness/claude-code.md skills/skiddle-mode/references/harness/claude-code.md
+rmdir docs/harness
+
 # Rename identifiers in every text file except the license, pstack's own README, images, and the
 # statechart test corpus (golden outputs that never name pstack).
 find . -type f \
@@ -51,6 +56,8 @@ find . -type f \
     s/pstack-models/sbrain-models/g;
     s/\bpstack:/sbrain:/g;
     s/<pstack>/<sbrain>/g;
+    s{\]\(\.\./harness/claude-code\.md\)}{](../../skills/skiddle-mode/references/harness/claude-code.md)}g;
+    s{In Claude Code, read \[the Claude Code adapter\]\(\.\./\.\./docs/harness/claude-code\.md\) once per session before you follow this skill\. It maps the Cursor names in pstack skills to Claude Code\.}{Outside Cursor, read your agent\x27s adapter in [`skiddle-mode/references/harness/`](../skiddle-mode/references/harness/README.md) once per session before you follow this skill. It maps the Cursor names in SBrain skills to your agent\x27s tools.}g;
   '
 
 printf 'cursor/plugins %s\npstack %s\n' "$rev" "$version" > .upstream-pstack
