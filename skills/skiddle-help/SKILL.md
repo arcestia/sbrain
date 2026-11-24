@@ -37,8 +37,8 @@ When the model rule is missing and it matters, ask whether the user wants to pic
 
 ## Get set up
 
-1. Install with `~/sbrain/scripts/install.sh`. It finds the agents on this machine and sets up each one: the Claude Code plugin, skill links in `~/.agents/skills/` (read by Cursor, Codex, Copilot, OpenCode, Gemini CLI, Pi, Amp, Goose, and Devin), each agent's own `skiddle-agent` and `comment-sicko` files, and the format hook where the agent supports one. `--list` shows what it found, `--only codex,cursor` limits it, `--dry-run` previews it, and `--uninstall` removes only what it added.
-2. Run [`setup-sbrain`](../setup-sbrain/SKILL.md) once per agent. It asks for a reasoning budget, maps a model to each role, and writes that agent's model file. Then it offers once each to generate a verification skill and a formal verification skill for the project, unless the project already has one.
+1. Install with one line, `curl -fsSL https://raw.githubusercontent.com/arcestia/sbrain/main/scripts/bootstrap.sh | bash`, which clones SBrain into `~/.sbrain` and runs `scripts/install.sh`. From an existing clone, run `scripts/install.sh` in it. The installer finds the agents on this machine and sets up each one: the Claude Code plugin, skill links in `~/.agents/skills/` (read by Cursor, Codex, Copilot, OpenCode, Gemini CLI, Pi, Amp, Goose, and Devin), each agent's own `skiddle-agent` and `comment-sicko` files, and the format hook where the agent supports one. `--list` shows what it found, `--only codex,cursor` limits it, `--dry-run` previews it, `--update` pulls the latest SBrain and reinstalls, `--doctor` reports what is installed and what is missing, and `--uninstall` removes only what it added.
+2. Run [`setup-sbrain`](../setup-sbrain/SKILL.md) once per agent. It asks for a reasoning budget and who approves PRs (a teammate, or the user alone), maps a model to each role, and writes that agent's model file. Then it offers once each to generate a verification skill and a formal verification skill for the project, unless the project already has one.
 3. Start a real task with `skiddle-mode`, a goal, and a check that can pass or fail.
 
 How to type a skill differs by agent: `/sbrain:skiddle-mode` in Claude Code, `$skiddle-mode` in Codex, `/skill:skiddle-mode` in Pi, and `/skiddle-mode` in Cursor, Copilot, and most others. Each adapter in [`skiddle-mode/references/harness/`](../skiddle-mode/references/harness/README.md) says so, and says what that agent can't do, such as subagents in Pi.
@@ -123,7 +123,7 @@ Not in SBrain:
 Playbooks are step lists inside `/skiddle-mode`, not skills, so they have no slash command. Inside `/skiddle-mode`, describing the task picks one, and these phrases name one directly:
 
 - "babysit this pr" or "check on pr 123" runs Babysit. It drives the PR to merge-ready and stops there. It doesn't merge unless the user asks to merge, land, or ship.
-- "land the stack" runs Shipping. It lands only PRs a teammate approved.
+- "land the stack" runs Shipping. It lands only PRs a teammate approved, unless `setup-sbrain` recorded `review: solo`.
 - "take over this branch" runs Session pickup.
 - "pause safely" runs Pause safely.
 - "full autopilot on this queue" runs Autopilot-full. "autopilot, don't merge" runs Autopilot-stack.

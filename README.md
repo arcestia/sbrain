@@ -1,93 +1,105 @@
 # SBrain
 
-SBrain is my agent development process. It is a fork of [pstack](https://github.com/cursor/plugins/tree/main/pstack) by Lauren Tan, with the same router, playbooks, and principles. It is extended for the stacks I ship (TypeScript, React, and Next.js on the frontend, Go, Rust, Ruby, and PHP on the backend) and for every coding agent I use. See [NOTICE.md](NOTICE.md) for attribution and the full list of changes.
+One command, `skiddle-mode`, that makes your coding agent work like a careful senior engineer: it restates the goal, picks a plan, writes less code, proves the change works, and opens a reviewable PR. It runs in Claude Code, Cursor, Codex, GitHub Copilot, OpenCode, Gemini CLI, Antigravity, Pi, and any other agent that reads Agent Skills, and it knows TypeScript, React, Next.js, Go, Rust, Ruby, and PHP.
 
-## Install
+SBrain is a fork of [pstack](https://github.com/cursor/plugins/tree/main/pstack) by Lauren Tan. See [NOTICE.md](NOTICE.md).
 
-One script sets up every agent it finds on the machine:
+## Quick start
 
-```bash
-~/sbrain/scripts/install.sh --list
-```
+**1. Install.** One line sets up every agent it finds on your machine (macOS, Linux, or WSL, with `git` and `python3`):
 
 ```bash
-~/sbrain/scripts/install.sh
+curl -fsSL https://raw.githubusercontent.com/arcestia/sbrain/main/scripts/bootstrap.sh | bash
 ```
 
-| Agent | What the installer sets up | How you start a task |
-| --- | --- | --- |
-| Claude Code | The plugin from this folder's marketplace: skills, agents, and the format hook | `/sbrain:skiddle-mode` |
-| Cursor | Skill links, `~/.cursor/agents/`, and an `afterFileEdit` hook | `/skiddle-mode` |
-| OpenAI Codex | Skill links, `~/.codex/agents/*.toml`, and a `PostToolUse` hook (trust it once with `/hooks`) | `$skiddle-mode` |
-| GitHub Copilot (CLI, VS Code) | Skill links, `~/.copilot/agents/`, and `~/.copilot/hooks/sbrain-format.json` | `/skiddle-mode` |
-| OpenCode | Skill links and `~/.config/opencode/agents/` | ask for `skiddle-mode` |
-| Gemini CLI | Skill links, `~/.gemini/agents/`, and an `AfterTool` hook | ask for `skiddle-mode` |
-| Antigravity CLI | Skill links in `~/.gemini/config/skills/` | ask for `skiddle-mode` |
-| Pi | Skill links | `/skill:skiddle-mode` |
-| Amp, Goose, Devin, any Agent Skills client | Skill links in `~/.agents/skills/` (`--only skills`) | the agent's own skill syntax |
+**2. Set it up in your agent.** Run `setup-sbrain` once. It asks for a reasoning budget and whether a teammate approves your PRs.
 
-Skill links are symlinks into this folder, so edits here apply at once. The installer never overwrites a file it didn't write, saves a `.sbrain-backup` of any JSON config before its first change, and `--uninstall` removes only what it added. `--only codex,cursor` limits it, and `--dry-run` previews it.
-
-Then run `setup-sbrain` once in each agent to pick a model and reasoning budget per role. Start real work with `skiddle-mode`, a goal, and a check that can pass or fail:
+**3. Give it a real task.** State the goal and how you'll know it's done:
 
 ```text
-/sbrain:skiddle-mode The /orders endpoint in the Go API returns 500 when the cart is empty.
-Done when an empty-cart request returns 422 with our problem+json body, and the Next.js
+/skiddle-mode The /orders endpoint in the Go API returns 500 when the cart is empty.
+Done when an empty-cart request returns 422 with our problem+json body, and the
 checkout page shows the validation message.
 ```
 
-`skiddle-help` answers questions about any skill or playbook.
+How you type it depends on the agent:
+
+| Agent | Type |
+| --- | --- |
+| Claude Code | `/sbrain:skiddle-mode` |
+| Codex | `$skiddle-mode` |
+| Pi | `/skill:skiddle-mode` |
+| Cursor, Copilot, and most others | `/skiddle-mode` |
+| OpenCode, Gemini CLI, Antigravity | ask for `skiddle-mode` by name |
+
+Stuck? Ask `skiddle-help`, for example "which skill reviews a PR?"
+
+## Three more things to try
+
+```text
+/skiddle-mode Why do checkout requests time out under load? Don't change code.
+```
+
+```text
+/skiddle-mode Add a `discount_code` field to orders, from the Laravel API through the
+Next.js checkout form. Done when a valid code lowers the total in the browser.
+```
+
+```text
+/skiddle-mode babysit PR 482
+```
+
+The first runs a read-only investigation. The second is a feature that crosses a language boundary, so SBrain changes the API contract first and checks both sides. The third drives a PR to merge-ready: fixing CI, answering review threads, and stopping before the merge.
+
+## Keep it working
+
+From your SBrain folder (`~/.sbrain` if you used the one-line install):
+
+| Command | What it does |
+| --- | --- |
+| `scripts/install.sh --update` | Pull the latest SBrain and reinstall. Safe to run any time. |
+| `scripts/install.sh --doctor` | Show which agents have SBrain, which toolchains exist, and what's missing. |
+| `scripts/install.sh --only codex,cursor` | Set up only those agents. `--list` shows what was detected. |
+| `scripts/install.sh --uninstall` | Remove only what SBrain added. |
+
+Other ways in:
+
+- **Claude Code only:** `/plugin marketplace add arcestia/sbrain`, then `/plugin install sbrain@sbrain`.
+- **Skills only, any agent:** `npx skills add arcestia/sbrain`. You get the skills and adapters, but not the agent files or the format hook.
+
+## What the installer sets up
+
+| Agent | Skills | `skiddle-agent` and `comment-sicko` | Format-on-edit hook |
+| --- | --- | --- | --- |
+| Claude Code | plugin | plugin | yes |
+| Cursor | `~/.agents/skills/` | `~/.cursor/agents/` | `afterFileEdit` in `~/.cursor/hooks.json` |
+| Codex | `~/.agents/skills/` | `~/.codex/agents/*.toml` | `PostToolUse` in `~/.codex/hooks.json` (trust it once with `/hooks`) |
+| GitHub Copilot (CLI, VS Code) | `~/.agents/skills/` | `~/.copilot/agents/` | `~/.copilot/hooks/sbrain-format.json` |
+| OpenCode | `~/.agents/skills/` | `~/.config/opencode/agents/` | none (the language skill formats before commit) |
+| Gemini CLI | `~/.agents/skills/` | `~/.gemini/agents/` | `AfterTool` in `~/.gemini/settings.json` |
+| Antigravity CLI | `~/.gemini/config/skills/` | none (uses a general subagent) | none |
+| Pi | `~/.agents/skills/` | none (Pi has no subagents) | none |
+| Amp, Goose, Devin, others | `~/.agents/skills/` (`--only skills`) | `~/.agents/agents/` (Goose) | none |
+
+Skills are symlinks into your SBrain folder, so `--update` changes every agent at once. The installer never overwrites a file it didn't write, and it backs up a JSON config once before its first change.
 
 ## What's inside
 
 | Part | What it does |
 |---|---|
-| `skills/skiddle-mode/` | The router. It matches a task to a playbook (bug fix, feature, refactoring, investigation, perf issue, shipping, and 16 more), applies the principles, delegates code to `skiddle-agent`, and loads the language skill for every file it edits. |
-| `skills/skiddle-mode/references/harness/` | One adapter per agent. Each maps the Cursor names the skills use (`Task`, `AskQuestion`, model slugs, paths) to that agent's tools, and says what the agent can't do and what replaces it. `generic.md` covers any agent without its own adapter. |
-| `skills/principle-*/` | pstack's 24 one-rule principles, unchanged. |
-| Language skills | `typescript-best-practices` (pstack's), plus `react-best-practices` (React and Next.js), `go-best-practices` (`net/http`, Chi, Gin, Echo, Fiber), `rust-best-practices` (Tokio, Axum), `ruby-best-practices` (Rails, Sinatra, Hanami, plain Ruby), and `php-best-practices` (Laravel). Each lists the rules, the framework pitfalls, and the commands that prove a change in that stack. |
-| `skills/polyglot-boundaries/` | Contract-first changes to anything two languages share: APIs, messages, webhooks, and tables. It covers int64 IDs in JavaScript, time, money, null versus absent, enums, casing, errors, and the expand, migrate, contract deploy order. |
-| Other skills | pstack's understanding, design, verification, and hygiene skills (`how`, `why`, `architect`, `arena`, `swarm`, `interrogate`, `blast-radius`, `tdd`, `create-verification-skill`, `statechart`, `unslop`, `no-comments`, and more). |
-| `agents/` | `skiddle-agent` (the delegate that reads the router first) and `comment-sicko` (the comment reviewer behind `no-comments`). Claude Code loads them from the plugin, and the installer writes each other agent's own format. |
-| `hooks/format-on-edit.sh` | After an edit, formats the file with gofmt, rustfmt, Biome, Prettier, or RuboCop's Layout cops, only when the language or repository uses that formatter. It reads the edited path from every supported agent's hook payload, including Codex patches. PHP is left to Pint at commit time, because Pint removes unused imports mid-edit. `SBRAIN_FORMAT_ON_EDIT=0` turns it off. |
-| `scripts/install.sh` | Installs, updates, and uninstalls SBrain for each agent. |
-| `scripts/check.sh` | The portability check. See Change SBrain. |
-| `docs/guide/` | pstack's upstream guide, kept for reference with commands renamed. |
+| `skiddle-mode` | The router. It matches your task to a playbook (bug fix, feature, refactoring, investigation, perf issue, shipping, and 16 more), applies 24 engineering principles, delegates code to a subagent, and loads the language skill for every file it edits. |
+| Language skills | `typescript-`, `react-`, `go-`, `rust-`, `ruby-`, and `php-best-practices`: the rules, the framework pitfalls (Next.js, Chi, Gin, Echo, Fiber, Axum, Rails, Hanami, Laravel), and the commands that prove a change. |
+| `polyglot-boundaries` | Contract-first changes to anything two languages share, such as an API between a Next.js frontend and a Go backend. |
+| Other skills | `how`, `why`, `architect`, `arena`, `swarm`, `interrogate`, `blast-radius`, `tdd`, `unslop`, `no-comments`, and more. `skiddle-help` explains each. |
+| Adapters | `skills/skiddle-mode/references/harness/`: how each agent maps SBrain's tool names, and what replaces what it lacks. |
+| Format hook | Formats each edited file with gofmt, rustfmt, Biome, Prettier, or RuboCop's layout rules, only where your repository uses them. `SBRAIN_FORMAT_ON_EDIT=0` turns it off. |
 
-## How my workflow differs from pstack's defaults
+## How SBrain differs from pstack
 
-- **Every agent, one source.** The skills stay in pstack's Cursor wording, and each agent maps it through its adapter. Where an agent has no subagents (Pi) or no hooks (OpenCode, Antigravity, Pi), the adapter says what replaces them, and an independent review is never faked.
-- **Polyglot verification.** "Verify on the matching surface" runs each stack's real toolchain. When a toolchain isn't on the host (for example Rust or PHP inside Docker), the language skill runs it in the repository's container, and a skipped check never counts as a pass.
-- **Team review.** Teammates review every PR. Opening a PR writes for a reviewer who never saw the session, and Shipping lands only PRs with the required approval.
+- **Every agent, one source.** The skills keep pstack's wording, and each agent maps it through its adapter. Where an agent has no subagents or hooks, the adapter says what replaces them, and an independent review is never faked.
+- **Polyglot verification.** "Verify on the matching surface" runs each stack's real toolchain. A toolchain missing on your machine (such as Rust or PHP in Docker) runs in the repository's container, and a skipped check never counts as a pass.
+- **Review you choose.** With `review: team`, Shipping lands a PR only after a teammate approves it. With `review: solo`, your own go-ahead is enough.
 
-## Change SBrain
+## Contributing
 
-Edit the skills directly. To add a language or framework, copy the shape of an existing `*-best-practices` skill and add one line to the language trigger in `skills/skiddle-mode/SKILL.md`. To add an agent, write its adapter next to the others, list it in the harness `README.md`, and add its target to `scripts/install.sh`. Then run the check:
-
-```bash
-~/sbrain/scripts/check.sh --fix
-```
-
-It regenerates the generated files (each skill's Codex `agents/openai.yaml` and the portable `comment-sicko` copy), then fails on frontmatter that some agents silently reject, an adapter missing a Cursor name the skills use, a broken link, a script that doesn't parse, or a plugin that `claude plugin validate` rejects.
-
-## Pull a newer pstack
-
-The `upstream/pstack` branch holds pstack's Claude Code tree with only mechanical changes: identifiers renamed, and the adapters moved into the skill tree. Merging it into `main` conflicts only where pstack and SBrain changed the same lines.
-
-```bash
-git -C ~/sbrain worktree add ../sbrain-upstream upstream/pstack
-```
-
-```bash
-~/sbrain/scripts/sync-upstream.sh ~/sbrain-upstream
-```
-
-```bash
-git -C ~/sbrain-upstream add -A && git -C ~/sbrain-upstream commit -m "chore(upstream): sync pstack"
-```
-
-```bash
-git -C ~/sbrain merge upstream/pstack
-```
-
-`.upstream-pstack` records which pstack commit and version SBrain last merged.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for changing skills, adding an agent or a language, the checks, and pulling a newer pstack.

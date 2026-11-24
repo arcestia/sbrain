@@ -3,13 +3,13 @@
   "owner": {
     "name": "SBrain"
   },
-  "description": "Local marketplace for SBrain, a personal agent development process forked from pstack.",
+  "description": "SBrain, an agent development process forked from pstack, for Claude Code and every other coding agent.",
   "plugins": [
     {
       "name": "sbrain",
       "source": "./",
-      "description": "SBrain: a personal agent development process for Claude Code, forked from Lauren Tan's pstack and extended for TypeScript, React, Next.js, Go, Rust, Ruby, and PHP.",
-      "version": "0.1.0"
+      "description": "SBrain: one command, skiddle-mode, that makes your coding agent plan, build, and verify like a careful senior engineer. Forked from Lauren Tan's pstack. Runs in Claude Code, Cursor, Codex, Copilot, OpenCode, Gemini CLI, and more, with TypeScript, React, Next.js, Go, Rust, Ruby, and PHP built in.",
+      "version": "0.2.0"
     }
   ]
 }

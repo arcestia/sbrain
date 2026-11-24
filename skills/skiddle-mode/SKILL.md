@@ -28,7 +28,7 @@ The remaining triggers live only here:
 - Before commit → strip slop from the diff, with your agent's code-simplify skill when the adapter names one, else by hand: dead code, one-caller wrappers, guards for states that cannot happen. Before review → **no-comments**.
 - Shipping UI → drive the running app with the session's browser tools, or Playwright, against a real build. Shipping a CLI or service → run the built binary or server from the shell with real inputs and read its output.
 - A number you measured → **benchmark-checklist**.
-- PR status → the **Babysit** playbook. Landing a green stack → the **Shipping** playbook. Teammates review every PR, so a merge waits for the approvals the repository requires.
+- PR status → the **Babysit** playbook. Landing a green stack → the **Shipping** playbook. A merge waits for the approvals the repository requires, and unless the model rule says `review: solo`, that includes a teammate's.
 - Bot review comments → judge each on its merits.
 - Long or unattended work → **show-me-your-work**.
 

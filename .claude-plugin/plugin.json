@@ -1,21 +1,26 @@
 {
   "name": "sbrain",
-  "version": "0.1.0",
-  "description": "SBrain: a personal agent development process for Claude Code, forked from Lauren Tan's pstack and extended for TypeScript, React, Next.js, Go, Rust, Ruby, and PHP.",
+  "version": "0.2.0",
+  "description": "SBrain: one command, skiddle-mode, that makes your coding agent plan, build, and verify like a careful senior engineer. Forked from Lauren Tan's pstack. Runs in Claude Code, Cursor, Codex, Copilot, OpenCode, Gemini CLI, and more, with TypeScript, React, Next.js, Go, Rust, Ruby, and PHP built in.",
+  "homepage": "https://github.com/arcestia/sbrain",
+  "repository": "https://github.com/arcestia/sbrain",
   "license": "MIT",
   "keywords": [
     "sbrain",
-    "sbrain-mode",
+    "skiddle-mode",
     "pstack",
     "workflow",
     "principles",
     "subagents",
+    "multi-agent",
+    "agent-skills",
     "polyglot",
     "go",
     "rust",
     "ruby",
     "php",
     "typescript",
-    "react"
+    "react",
+    "nextjs"
   ]
 }
