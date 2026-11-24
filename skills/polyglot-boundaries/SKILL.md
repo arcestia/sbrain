@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Polyglot boundaries
 
-In Claude Code, read [the Claude Code adapter](../../docs/harness/claude-code.md) once per session before you follow this skill. It maps the Cursor names in SBrain skills to Claude Code.
+Outside Cursor, read your agent's adapter in [`skiddle-mode/references/harness/`](../skiddle-mode/references/harness/README.md) once per session before you follow this skill. It maps the Cursor names in SBrain skills to your agent's tools.
 
 Apply the **boundary-discipline** and **migrate-callers-then-delete-legacy-apis** principle skills. A boundary between two languages is where each side's type system stops seeing the other. The wire format is the only shared truth, so treat it as the design.
 
