@@ -127,6 +127,32 @@ for path in [".claude-plugin/plugin.json", ".claude-plugin/marketplace.json", "h
     except Exception as error:
         fail("%s is not valid JSON: %s" % (path, error))
 
+# 6. Every principle leaf is in the skiddle-mode Principles index, and every entry has a leaf.
+# A leaf the index doesn't list never triggers. An entry without a leaf points nowhere.
+router = open("skills/skiddle-mode/SKILL.md", encoding="utf-8").read()
+section = router.split("\n## Principles\n", 1)[-1].split("\n## ", 1)[0]
+listed = set()
+for line in section.splitlines():
+    entry = re.match(r"^- \*\*(.+?)\*\*", line)
+    if not entry:
+        continue
+    named = re.search(r"\(\*\*(principle-[a-z0-9-]+)\*\*\)", line)
+    if named:
+        listed.add(named.group(1))
+    else:
+        slug = re.sub(r"[^a-z0-9 -]", "", entry.group(1).rstrip(".").lower()).strip()
+        listed.add("principle-" + re.sub(r"[ -]+", "-", slug))
+leaves = {d for d in os.listdir("skills") if d.startswith("principle-")}
+for name in sorted(listed - leaves):
+    fail("skiddle-mode's Principles index lists %s, but skills/%s does not exist" % (name, name))
+for name in sorted(leaves - listed):
+    fail("skills/%s is not in skiddle-mode's Principles index, so it never triggers" % name)
+for name in sorted(leaves):
+    fm, _ = frontmatter(os.path.join("skills", name, "SKILL.md"))
+    desc = re.search(r"^description:\s*\"?(.*)", fm or "", re.M)
+    if not desc or not desc.group(1).startswith("Apply"):
+        fail("skills/%s: a principle's description starts with \"Apply\" and says when it applies" % name)
+
 for line in warnings:
     print("warn  " + line)
 for line in failures:
