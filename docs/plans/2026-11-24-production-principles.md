@@ -2,7 +2,7 @@
 
 **Goal.** Add principles that cover the variety of work SBrain runs on (web apps, game servers, Roblox, Discord bots, gateways, edge workers, native apps, AI features), not only how the agent writes code.
 
-**Status (2026-11-25).** Phase 1 has landed. PR0 is [arcestia/sbrain#1](https://github.com/arcestia/sbrain/pull/1), PR3 (Old and New Run Together) is [#2](https://github.com/arcestia/sbrain/pull/2), and PR2 (Design for Partial Failure) is [#3](https://github.com/arcestia/sbrain/pull/3). PR2 failed the strict pass rule and was kept for its partial effect. PR1 (Server Owns the Truth) and PR4 (Least Privilege) were cut, because both arms of their evals passed. Phase 2 and PR7 have not started. [The results](2026-11-24-production-principles-results.md) hold the evidence. The checklists below are the original plan, not a record of what passed.
+**Status (2026-11-25).** Phase 1 has landed. PR0 is [arcestia/sbrain#1](https://github.com/arcestia/sbrain/pull/1), PR3 (Old and New Run Together) is [#2](https://github.com/arcestia/sbrain/pull/2), and PR2 (Design for Partial Failure) is [#3](https://github.com/arcestia/sbrain/pull/3). PR2 failed the strict pass rule and was kept for its partial effect. PR1 (Server Owns the Truth) and PR4 (Least Privilege) were cut, because both arms of their evals passed. In phase 2 (2026-11-25), PR5 (Evaluate Nondeterministic Changes) passed and ships, and PR6 (Earn Every Dependency) was cut because both arms passed; see [the phase 2 results](2026-11-25-production-principles-phase-2-results.md). PR7 has not started. [The results](2026-11-24-production-principles-results.md) hold the evidence. The checklists below are the original plan, not a record of what passed.
 
 ## What changes
 

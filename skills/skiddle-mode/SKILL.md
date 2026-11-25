@@ -79,6 +79,7 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 - **Old and New Run Together.** Changing schemas, stored data, message or cache formats, config, or APIs that deployed clients call. Expand, migrate, and contract across deploys, writing both shapes while old code still runs. Outcome-Oriented Execution's planned breakage never covers data or contracts that outlive a deploy.
 - **Design for Partial Failure.** Code calls anything over a network or a rate-limited API. Bound every wait, retry only what is safe to repeat, honor rate limits, and log every handled failure with an ID and no secrets.
+- **Evaluate Nondeterministic Changes.** Changing a prompt, a model or its settings, an agent skill, or randomized logic. Run the same fixed cases on the old and the new version, several runs each, and report both pass rates. One good output proves nothing.
 
 ## Autonomy
 

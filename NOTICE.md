@@ -13,6 +13,6 @@ SBrain changes pstack in these ways:
 - Mapped `cursor-team-kit` skills (`/deslop`, `control-ui`, `control-cli`) and Origin's CLI to Claude Code in the router, the playbooks, and the adapter.
 - Added language skills for Go, Rust, Ruby, PHP, and React and Next.js, the `polyglot-boundaries` skill, a format-on-edit hook, and keep rules for tool-read comments in `comment-sicko`.
 - Made the Shipping playbook wait for a teammate's review approval, unless `setup-sbrain` records `review: solo`, and had the Opening a PR playbook write its body for a reviewer and leave picking reviewers to the repository.
-- Added production principles (Old and New Run Together, Design for Partial Failure) in their own group of the `skiddle-mode` Principles index and their own section of the principles guide, plus a check that keeps the index and the `principle-*` skills in step.
+- Added production principles (Old and New Run Together, Design for Partial Failure, Evaluate Nondeterministic Changes) in their own group of the `skiddle-mode` Principles index and their own section of the principles guide, plus a check that keeps the index and the `principle-*` skills in step.
 
 pstack's own README, with the author's introduction, is at the upstream link above.
