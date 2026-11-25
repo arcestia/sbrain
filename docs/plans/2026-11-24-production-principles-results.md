@@ -45,7 +45,7 @@ The `skiddle-mode` on-invoke size went from ~3.1k to ~3.3k tokens (rounded), wit
 ## Decision
 
 - **Ship:** PR0 (the index check) and Old and New Run Together.
-- **Operator's call:** Design for Partial Failure. It is stacked last, so dropping it touches nothing else.
+- **Kept by the operator (2026-11-25):** Design for Partial Failure, for its effect on timeouts and failure logs. Its `Retry-After` rule showed no effect, so it is the first candidate to cut if a later eval still shows none.
 - **Cut, per the plan's rule:** Server Owns the Truth and Least Privilege. Their evaluated branches are kept locally as `eval/principles/*`.
 - **Re-test before reviving them:** Least Privilege with the Discord intents scenario, and Server Owns the Truth with a scenario that models get wrong without help.
 
