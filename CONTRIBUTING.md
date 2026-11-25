@@ -7,6 +7,7 @@
 Edit `skills/<name>/SKILL.md`. Keep pstack's wording where you can, because every changed upstream line is a future merge conflict. The skills use Cursor's tool names (`Task`, `AskQuestion`), and the adapters in `skills/skiddle-mode/references/harness/` map them for each agent.
 
 - **New language or framework.** Copy the shape of an existing `*-best-practices` skill, then add one line to the language trigger in `skills/skiddle-mode/SKILL.md`.
+- **New principle.** Add `skills/principle-<name>/SKILL.md` (a description that starts with "Apply when", and a short body), plus one line in the "Production (SBrain)" group of `skiddle-mode`'s Principles index. The check fails until both exist.
 - **New agent.** Write `skills/skiddle-mode/references/harness/<agent>.md` next to the others, list it in that folder's `README.md`, and add a target to `scripts/install.sh` (its detection, install, uninstall, and doctor lines).
 
 ## Check your change
