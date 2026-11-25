@@ -69,4 +69,11 @@ And one meta principle:
 
 Don't memorize the list. Skim it now, then come back when you catch the agent doing something a name here would have prevented. That's how the vocabulary sticks.
 
+## SBrain's production principles
+
+pstack's 24 govern how the agent works. SBrain adds two for how a system behaves once it ships. Both went through a blind eval ([results](../plans/2026-11-24-production-principles-results.md)): Old and New Run Together passed, and Design for Partial Failure failed the strict pass rule but was kept for its effect on timeouts and failure logs.
+
+- [Old and New Run Together](../../skills/principle-old-and-new-run-together/SKILL.md) keeps every change to stored data, message formats, config, and deployed APIs working while old and new code run side by side.
+- [Design for Partial Failure](../../skills/principle-design-for-partial-failure/SKILL.md) bounds every network wait, retries only what is safe to repeat and can clear, and logs each handled failure with an ID and no secrets.
+
 Next: [Make it yours](./09-make-it-yours.md).
