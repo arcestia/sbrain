@@ -38,11 +38,12 @@ def description(fm):
         lines = [line.strip() for line in rest.splitlines() if line.strip()]
         return (" " if head[0] == ">" else "\n").join(lines)
     text = " ".join(line.strip() for line in raw.splitlines())
-    if len(text) > 1 and text[0] == text[-1] == "'":
-        return text[1:-1].replace("''", "'")
-    if len(text) > 1 and text[0] == text[-1] == '"':
-        return text[1:-1].replace('\\"', '"').replace("\\\\", "\\")
-    return text
+    quoted = re.match(r'"((?:[^"\\]|\\.)*)"|\'((?:[^\']|\'\')*)\'', text)
+    if quoted and quoted.group(1) is not None:
+        return quoted.group(1).replace('\\"', '"').replace("\\\\", "\\")
+    if quoted:
+        return quoted.group(2).replace("''", "'")
+    return re.sub(r"\s#.*$", "", text)  # A plain value ends at a comment.
 
 # 1. Agent Skills frontmatter, and the Codex opt-out file generated from disable-model-invocation.
 OPENAI_YAML = (
