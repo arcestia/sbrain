@@ -77,7 +77,7 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 **Production (SBrain)**
 
-- **Old and New Run Together.** Changing schemas, stored data, message or cache formats, config, or APIs that deployed clients call. Expand, migrate, and contract across deploys. Outcome-Oriented Execution's planned breakage never covers data or contracts that outlive a deploy.
+- **Old and New Run Together.** Changing schemas, stored data, message or cache formats, config, or APIs that deployed clients call. Expand, migrate, and contract across deploys, writing both shapes while old code still runs. Outcome-Oriented Execution's planned breakage never covers data or contracts that outlive a deploy.
 
 ## Autonomy
 
